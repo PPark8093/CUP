@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".TodoFragment">
+
+    <RelativeLayout
+        android:id="@+id/todoContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/todoAddInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toStartOf="@+id/todoAddButton"
+            android:tooltipText="입력"/>
+
+        <Button
+            android:id="@+id/todoAddButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/todoListView"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true"
+            android:text="ADD"
+            android:textStyle="bold"
+            android:background="@drawable/small_round_button"/>
+
+        <ListView
+            android:id="@+id/todoListView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/todoAddInput"
+            android:scrollbarFadeDuration="0"
+            android:scrollbarSize="5dp"
+            android:scrollbarThumbVertical="@color/black"/>
+
+    </RelativeLayout>
+
+</RelativeLayout>

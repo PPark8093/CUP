@@ -1,18 +1,22 @@
 package kr.pak.cup
 
+import android.content.Context
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.AdapterView.OnItemClickListener
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ListView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.fragment.app.Fragment
+import org.json.JSONArray
+import java.io.IOException
+import java.io.ObjectInputStream
+import java.io.ObjectOutputStream
 
 class TodoFragment : Fragment() {
 
@@ -24,6 +28,8 @@ class TodoFragment : Fragment() {
     private lateinit var inputTodo: EditText
     private lateinit var todoList: ListView
 
+    var jsonArr = JSONArray()
+
     private lateinit var todoListItems: ArrayList<String>
 
     private lateinit var adapter: ArrayAdapter<String>
@@ -31,18 +37,20 @@ class TodoFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         rootView = inflater.inflate(R.layout.fragment_todo, container, false) as ViewGroup
 
         addButton = rootView.findViewById(R.id.todoAddButton)
         inputTodo = rootView.findViewById(R.id.todoAddInput)
         todoList = rootView.findViewById(R.id.todoListView)
 
-        todoListItems = ArrayList<String>()
+        todoListItems = readTodoList()
 
         adapter = activity?.let {
             ArrayAdapter<String>(it, android.R.layout.simple_list_item_1, todoListItems)
         }!!
+
+        todoList.adapter = adapter
 
         addButton.setOnClickListener {
             if (inputTodo.text.equals("")) {
@@ -54,11 +62,6 @@ class TodoFragment : Fragment() {
                 }!!
                 todoList.adapter = adapter
             }
-
-            /*for (i in 1..adapter.count) {
-                todoListItems.add(adapter.getItem(i).toString())
-                todoListItems.distinct()
-            }*/ // 파일 저장
         }
 
         todoList.setOnItemLongClickListener { parent, view, position, id ->
@@ -78,15 +81,56 @@ class TodoFragment : Fragment() {
         super.onPause()
 
         todoListItemSave = todoListItems
+
+        saveTodoList(todoListItemSave)
     }
 
     override fun onResume() {
         super.onResume()
 
-        todoListItems = todoListItemSave
+        todoListItems = readTodoList()
         adapter = activity?.let {
             ArrayAdapter<String>(it, android.R.layout.simple_list_item_1, todoListItems)
         }!!
+
         todoList.adapter = adapter
+    }
+
+    private fun saveTodoList(list: ArrayList<String>) {
+        try {
+            val fileOutputStream = activity?.openFileOutput("todoList.dat", Context.MODE_PRIVATE)
+            val objectOutputStream = ObjectOutputStream(fileOutputStream)
+            objectOutputStream.writeObject(list)
+            objectOutputStream.close()
+            fileOutputStream?.close()
+            // Log.d("TodoFragment", "TodoList saved to internal storage")
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+    }
+
+    private fun readTodoList(): ArrayList<String> {
+        var list: ArrayList<String> = ArrayList<String>()
+        try {
+            val fileInputStream = activity?.openFileInput("todoList.dat")
+            val objectInputStream = ObjectInputStream(fileInputStream)
+            list = objectInputStream.readObject() as ArrayList<String>
+            objectInputStream.close()
+            fileInputStream?.close()
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+
+        return list
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        saveTodoList(todoListItems)
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        saveTodoList(todoListItems)
     }
 }

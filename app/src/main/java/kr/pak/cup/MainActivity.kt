@@ -21,6 +21,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var homeFragment: Fragment
     private lateinit var todoFragment: Fragment
+    private lateinit var groupFragment: Fragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,6 +46,7 @@ class MainActivity : AppCompatActivity() {
     private fun bottomMenuSetup() {
         homeFragment = HomeFragment()
         todoFragment = TodoFragment()
+        groupFragment = GroupFragment()
 
         supportFragmentManager.beginTransaction().replace(R.id.containerA, homeFragment).commit()
 
@@ -56,6 +58,10 @@ class MainActivity : AppCompatActivity() {
                 }
                 R.id.test_tab -> {
                     supportFragmentManager.beginTransaction().replace(R.id.containerA, todoFragment).commit()
+                    true
+                }
+                R.id.group_tab -> {
+                    supportFragmentManager.beginTransaction().replace(R.id.containerA, groupFragment).commit()
                     true
                 }
                 else -> false

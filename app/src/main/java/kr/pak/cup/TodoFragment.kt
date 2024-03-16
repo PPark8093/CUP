@@ -2,9 +2,10 @@ package kr.pak.cup
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.OnKeyListener
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Button
@@ -13,7 +14,6 @@ import android.widget.ListView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import org.json.JSONArray
 import java.io.IOException
 import java.io.ObjectInputStream
 import java.io.ObjectOutputStream
@@ -78,6 +78,26 @@ class TodoFragment : Fragment() {
 
             true
         }
+
+        inputTodo.setOnKeyListener(object : OnKeyListener {
+            override fun onKey(v: View?, keyCode: Int, event: KeyEvent): Boolean {
+                if (event.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
+                    if (inputTodo.text.equals("")) {
+                        Toast.makeText(context, "할 일을 입력하세요!", Toast.LENGTH_SHORT).show()
+                    } else {
+                        var now = System.currentTimeMillis()
+                        var date = Date(now)
+                        todoListItems.add("${format.format(date)}  |  " + inputTodo.text)
+                        adapter = activity?.let {
+                            ArrayAdapter<String>(it, android.R.layout.simple_list_item_1, todoListItems)
+                        }!!
+                        todoList.adapter = adapter
+                    }
+                    return true
+                }
+                return false
+            }
+        })
 
         return rootView
     }

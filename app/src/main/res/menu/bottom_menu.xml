@@ -10,4 +10,9 @@
         android:id="@+id/test_tab"
         android:title="TODO"
         android:icon="@drawable/todo_icon"/>
+
+    <item
+        android:id="@+id/group_tab"
+        android:title="모둠?"
+        android:icon="@drawable/group_icon"/>
 </menu>

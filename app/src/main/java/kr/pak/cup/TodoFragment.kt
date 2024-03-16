@@ -17,8 +17,11 @@ import org.json.JSONArray
 import java.io.IOException
 import java.io.ObjectInputStream
 import java.io.ObjectOutputStream
+import java.text.SimpleDateFormat
+import java.util.Date
 
 class TodoFragment : Fragment() {
+
 
     private lateinit var rootView: ViewGroup
 
@@ -28,11 +31,11 @@ class TodoFragment : Fragment() {
     private lateinit var inputTodo: EditText
     private lateinit var todoList: ListView
 
-    var jsonArr = JSONArray()
-
     private lateinit var todoListItems: ArrayList<String>
 
     private lateinit var adapter: ArrayAdapter<String>
+
+    val format = SimpleDateFormat("yyyy-MM-dd hh:mm:ss")
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -56,7 +59,9 @@ class TodoFragment : Fragment() {
             if (inputTodo.text.equals("")) {
                 Toast.makeText(context, "할 일을 입력하세요!", Toast.LENGTH_SHORT).show()
             } else {
-                todoListItems.add((todoListItems.size + 1).toString() + ". " + inputTodo.text)
+                var now = System.currentTimeMillis()
+                var date = Date(now)
+                todoListItems.add("${format.format(date)}  |  " + inputTodo.text)
                 adapter = activity?.let {
                     ArrayAdapter<String>(it, android.R.layout.simple_list_item_1, todoListItems)
                 }!!

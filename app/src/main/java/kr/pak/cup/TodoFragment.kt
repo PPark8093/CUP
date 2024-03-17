@@ -2,6 +2,7 @@ package kr.pak.cup
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
@@ -132,6 +133,8 @@ class TodoFragment : Fragment() {
         } catch (e: IOException) {
             e.printStackTrace()
         }
+
+        Log.d("todo_save", "TodoList saved")
     }
 
     private fun readTodoList(): ArrayList<String> {
@@ -145,6 +148,8 @@ class TodoFragment : Fragment() {
         } catch (e: IOException) {
             e.printStackTrace()
         }
+
+        Log.d("todo_read", "TodoList Read")
 
         return list
     }

@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     tools:context=".TodoFragment">
 
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/todoContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -15,7 +15,20 @@
             android:id="@+id/todoAddInput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:tooltipText="입력"/>
+            android:tooltipText="입력"
+            android:background="@drawable/input_box"
+            android:minHeight="40dp"
+            android:hint="EX: 12시에 학원"/>
+
+        <ListView
+            android:id="@+id/todoListView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/todoAddButton"
+            android:scrollbarFadeDuration="0"
+            android:scrollbarSize="5dp"
+            android:scrollbarThumbVertical="@color/black"
+            android:layout_weight="1"/>
 
         <Button
             android:id="@+id/todoAddButton"
@@ -26,15 +39,6 @@
             android:textStyle="bold"
             android:background="@drawable/square_button"/>
 
-        <ListView
-            android:id="@+id/todoListView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@+id/todoAddButton"
-            android:scrollbarFadeDuration="0"
-            android:scrollbarSize="5dp"
-            android:scrollbarThumbVertical="@color/black"/>
-
-    </RelativeLayout>
+    </LinearLayout>
 
 </RelativeLayout>
